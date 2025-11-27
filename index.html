@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Further Maths Scientific Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="header">
+                <h1>Scientific Calculator</h1>
+                <p>Advanced Mathematics for Further Studies</p>
+            </div>
+            
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="basic">Basic</button>
+                <button class="mode-btn" data-mode="advanced">Advanced</button>
+                <button class="mode-btn" data-mode="statistics">Statistics</button>
+            </div>
+            
+            <div class="display-section">
+                <input type="text" id="display" class="display" readonly placeholder="0">
+                <div class="angle-mode">
+                    <label>Angle Mode:</label>
+                    <button id="degBtn" class="angle-btn active">DEG</button>
+                    <button id="radBtn" class="angle-btn">RAD</button>
+                </div>
+            </div>
+            
+            <!-- Basic Mode -->
+            <div id="basic-mode" class="mode-content active">
+                <div class="button-grid basic-grid">
+                    <button class="btn clear-btn" onclick="clearDisplay()">C</button>
+                    <button class="btn operator-btn" onclick="appendOperator('/')">&divide;</button>
+                    <button class="btn operator-btn" onclick="appendOperator('*')">&times;</button>
+                    <button class="btn operator-btn" onclick="appendOperator('-')">−</button>
+                    
+                    <button class="btn number-btn" onclick="appendNumber('7')">7</button>
+                    <button class="btn number-btn" onclick="appendNumber('8')">8</button>
+                    <button class="btn number-btn" onclick="appendNumber('9')">9</button>
+                    <button class="btn operator-btn" onclick="appendOperator('+')">+</button>
+                    
+                    <button class="btn number-btn" onclick="appendNumber('4')">4</button>
+                    <button class="btn number-btn" onclick="appendNumber('5')">5</button>
+                    <button class="btn number-btn" onclick="appendNumber('6')">6</button>
+                    <button class="btn operator-btn" onclick="appendOperator('^')">x^y</button>
+                    
+                    <button class="btn number-btn" onclick="appendNumber('1')">1</button>
+                    <button class="btn number-btn" onclick="appendNumber('2')">2</button>
+                    <button class="btn number-btn" onclick="appendNumber('3')">3</button>
+                    <button class="btn operator-btn" onclick="appendOperator('%')">%</button>
+                    
+                    <button class="btn number-btn" onclick="appendNumber('0')">0</button>
+                    <button class="btn number-btn" onclick="appendNumber('.')">.</button>
+                    <button class="btn equals-btn" onclick="calculate()" colspan="2">=</button>
+                </div>
+            </div>
+            
+            <!-- Advanced Mode -->
+            <div id="advanced-mode" class="mode-content">
+                <div class="button-grid advanced-grid">
+                    <button class="btn clear-btn" onclick="clearDisplay()">C</button>
+                    <button class="btn" onclick="toggleSign()">+/−</button>
+                    <button class="btn" onclick="appendOperator('/')">1/x</button>
+                    <button class="btn" onclick="sqrt()">√x</button>
+                    
+                    <button class="btn" onclick="sine()">sin</button>
+                    <button class="btn" onclick="cosine()">cos</button>
+                    <button class="btn" onclick="tangent()">tan</button>
+                    <button class="btn" onclick="logarithm()">log</button>
+                    
+                    <button class="btn" onclick="naturalLog()">ln</button>
+                    <button class="btn" onclick="factorial()">n!</button>
+                    <button class="btn" onclick="permutation()">P(n,r)</button>
+                    <button class="btn" onclick="combination()">C(n,r)</button>
+                    
+                    <button class="btn" onclick="sinh()">sinh</button>
+                    <button class="btn" onclick="cosh()">cosh</button>
+                    <button class="btn" onclick="tanh()">tanh</button>
+                    <button class="btn" onclick="exponential()">e^x</button>
+                    
+                    <button class="btn" onclick="pi()">π</button>
+                    <button class="btn" onclick="euler()">e</button>
+                    <button class="btn" onclick="degree()">°</button>
+                    <button class="btn equals-btn" onclick="calculate()" colspan="2">=</button>
+                </div>
+            </div>
+            
+            <!-- Statistics Mode -->
+            <div id="statistics-mode" class="mode-content">
+                <div class="stats-input">
+                    <textarea id="statsInput" placeholder="Enter numbers separated by commas&#10;Example: 2, 5, 8, 10"></textarea>
+                </div>
+                <div class="button-grid stats-grid">
+                    <button class="btn" onclick="calculateMean()">Mean (μ)</button>
+                    <button class="btn" onclick="calculateMedian()">Median</button>
+                    <button class="btn" onclick="calculateStdDev()">Std Dev (σ)</button>
+                    <button class="btn" onclick="calculateVariance()">Variance</button>
+                    <button class="btn" onclick="calculateSum()">Sum (Σ)</button>
+                    <button class="btn" onclick="calculateCount()">Count (n)</button>
+                    <button class="btn clear-btn" onclick="clearStats()">Clear</button>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <h3>History</h3>
+                <div id="history" class="history-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="calculator.js"></script>
+</body>
+</html>
