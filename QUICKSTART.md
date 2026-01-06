@@ -1,5 +1,7 @@
 # 🚀 Advanced Further Maths Scientific Calculator - Complete Guide
 
+By Codesphere_tech — Developer: Aigbologa Penticost Miracle
+
 ## Project Summary
 
 You now have a **world-class, professional-grade scientific calculator** with advanced features for solving complex mathematical equations, performing matrix operations, vector calculations, and comprehensive statistical analysis.

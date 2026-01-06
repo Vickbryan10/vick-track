@@ -1,5 +1,7 @@
 # 🧮 Vick Advance Maths Calculator
 
+By Codesphere_tech — Developer: Aigbologa Penticost Miracle
+
 A powerful, professional-grade scientific calculator with advanced equation solving, matrix operations, vector calculations, and comprehensive statistical analysis. Built with clean, documented code for educational and practical use.
 
 ---

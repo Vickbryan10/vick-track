@@ -1,5 +1,7 @@
 # 🚀 Netlify Deployment Guide
 
+By Codesphere_tech — Developer: Aigbologa Penticost Miracle
+
 ## Complete Setup for VICK ADVANCE MATHS CALCULATOR
 
 Your calculator is configured to work perfectly on Netlify with offline support and PWA features.

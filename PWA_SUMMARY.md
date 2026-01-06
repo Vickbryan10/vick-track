@@ -1,5 +1,7 @@
 # 🎉 PWA Transformation Complete!
 
+By Codesphere_tech — Developer: Aigbologa Penticost Miracle
+
 ## ✨ Your Calculator is Now a Progressive Web App
 
 Your Vick Advance Maths Calculator has been transformed into a **Progressive Web App (PWA)** with full offline support, Android installation, and deployment-ready configuration.

@@ -1,5 +1,7 @@
 # 🎓 FINAL PROJECT SUMMARY
 
+By Codesphere_tech — Developer: Aigbologa Penticost Miracle
+
 ## ✅ VICK ADVANCE MATHS CALCULATOR - COMPLETE
 
 Your professional-grade scientific calculator has been successfully developed with **production-quality code**.

@@ -1,6 +1,7 @@
 /**
  * Service Worker for Vick Advance Maths Calculator
  * Enables offline functionality and caching
+ * By Codesphere_tech — Developer: Aigbologa Penticost Miracle
  */
 
 const CACHE_NAME = 'vick-advance-maths-calculator-v1';

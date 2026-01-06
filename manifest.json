@@ -7,7 +7,12 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#0B3D91",
-  "background_color": "#ffffff",
+  "background_color": "#0B3D91",
+  "author": "Codesphere_tech",
+  "developer": {
+    "name": "Aigbologa Penticost Miracle",
+    "url": "https://codesphere.tech"
+  },
   "categories": ["productivity", "utilities"],
   "screenshots": [
     {
