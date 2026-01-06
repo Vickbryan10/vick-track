@@ -5,8 +5,8 @@
 }
 
 :root {
-    --bg: #ffffff;
-    --surface: #ffffff;
+    --bg: #f7f9fc;
+    --surface: #eef3f8;
     --muted: #f5f5f5;
     --text: #000000;
     --accent: #0B3D91; /* high-contrast dark blue */
@@ -14,6 +14,24 @@
     --success: #006400; /* dark green */
     --danger: #C53030; /* dark red */
     --border: #cfcfcf;
+}
+
+/* Dark theme overrides when `body.dark` is applied */
+body.dark {
+    --bg: #0b0f15;
+    --surface: #0f1724;
+    --muted: #0b1220;
+    --text: #ffffff;
+    --accent: #1e90ff;
+    --accent-strong: #1a6fcc;
+    --success: #22c55e;
+    --danger: #f87171;
+    --border: #233447;
+}
+
+/* Smooth theme transition */
+body {
+    transition: background 200ms ease, color 200ms ease;
 }
 
 body {
@@ -327,7 +345,7 @@ input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:foc
 .history-list {
     max-height: 200px;
     overflow-y: auto;
-    background: white;
+    background: var(--surface);
     border-radius: 8px;
     padding: 10px;
 }
@@ -391,7 +409,7 @@ input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:foc
 /* Print Styles */
 @media print {
     body {
-        background: white;
+        background: var(--bg);
     }
     
     .calculator {
@@ -460,12 +478,12 @@ input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:foc
 
 .eq-format {
     font-family: 'Courier New', monospace;
-    background: white;
+    background: var(--surface);
     padding: 10px;
     border-radius: 6px;
     margin-bottom: 10px;
     font-weight: 600;
-    color: #667eea;
+    color: var(--accent);
     text-align: center;
 }
 
@@ -484,38 +502,38 @@ input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:foc
 .mat-content input:focus,
 .vec-content input:focus {
     outline: none;
-    border-color: #667eea;
-    background: white;
+    border-color: var(--accent);
+    background: var(--surface);
 }
 
 .result-box {
-    background: white;
+    background: var(--surface);
     padding: 12px;
     border-radius: 8px;
     margin-top: 12px;
-    border: 2px solid #667eea;
+    border: 2px solid var(--accent);
     white-space: pre-wrap;
     font-family: 'Courier New', monospace;
     font-size: 13px;
-    color: #333;
+    color: var(--text);
     line-height: 1.6;
     min-height: 40px;
     overflow-x: auto;
 }
 
 .system-input {
-    background: white;
+    background: var(--surface);
     padding: 10px;
     border-radius: 6px;
     margin-bottom: 10px;
-    border-left: 3px solid #667eea;
+    border-left: 3px solid var(--accent);
 }
 
 .system-input span {
     display: block;
     font-family: 'Courier New', monospace;
     font-weight: 600;
-    color: #667eea;
+    color: var(--accent);
     margin-bottom: 8px;
     font-size: 12px;
 }
@@ -532,7 +550,7 @@ input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:foc
     display: flex;
     gap: 8px;
     margin-bottom: 10px;
-    background: white;
+    background: var(--surface);
     padding: 8px;
     border-radius: 6px;
 }
@@ -554,7 +572,7 @@ input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:foc
 .mat-content h4 {
     margin-top: 12px;
     margin-bottom: 8px;
-    color: #667eea;
+    color: var(--accent);
     font-size: 13px;
 }
 

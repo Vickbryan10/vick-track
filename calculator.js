@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupModeButtons();
     setupAngleModeButtons();
     initializeOfflineSupport();
+    initDarkMode();
 });
 
 /**
@@ -78,7 +79,7 @@ function setupModeButtons() {
     const modeButtons = document.querySelectorAll('.mode-btn');
     modeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-            switchMode(this.dataset.mode);
+            switchMode(this.dataset.mode, this);
         });
     });
 }
@@ -86,15 +87,54 @@ function setupModeButtons() {
 /**
  * Switch between calculator modes
  */
-function switchMode(mode) {
+function switchMode(mode, buttonEl) {
     const modeContents = document.querySelectorAll('.mode-content');
     const modeButtons = document.querySelectorAll('.mode-btn');
-    
+
     modeContents.forEach(content => content.classList.remove('active'));
     modeButtons.forEach(btn => btn.classList.remove('active'));
-    
-    document.getElementById(`${mode}-mode`).classList.add('active');
-    event.target.classList.add('active');
+
+    const targetContent = document.getElementById(`${mode}-mode`);
+    if (targetContent) targetContent.classList.add('active');
+
+    // If button element provided, mark it active, otherwise find by data-mode
+    if (buttonEl && buttonEl.classList) {
+        buttonEl.classList.add('active');
+    } else {
+        const btn = document.querySelector(`.mode-btn[data-mode="${mode}"]`);
+        if (btn) btn.classList.add('active');
+    }
+}
+
+/* Dark mode initialization and toggle */
+function initDarkMode() {
+    const btn = document.getElementById('darkModeToggle');
+    if (!btn) return;
+
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (saved === 'dark' || (!saved && prefersDark)) {
+        document.body.classList.add('dark');
+    }
+
+    const isDark = document.body.classList.contains('dark');
+    btn.setAttribute('aria-pressed', isDark);
+    btn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+
+    btn.addEventListener('click', function() {
+        toggleDarkMode();
+    });
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const btn = document.getElementById('darkModeToggle');
+    if (btn) {
+        btn.setAttribute('aria-pressed', isDark);
+        btn.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    }
 }
 
 /**
