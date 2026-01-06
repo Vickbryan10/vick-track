@@ -71,8 +71,8 @@ body {
 .mode-btn {
     flex: 1;
     padding: 10px;
-    border: 2px solid var(--border);
-    background: var(--surface);
+    border: 2px solid #333333;
+    background: #e8e8e8;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 700;
@@ -81,7 +81,8 @@ body {
 }
 
 .mode-btn:hover {
-    background: #f0f0f0;
+    background: #d0d0d0;
+    border-color: #222;
 }
 
 .mode-btn.active {
@@ -130,8 +131,8 @@ body {
 
 .angle-btn {
     padding: 6px 12px;
-    border: 1px solid var(--border);
-    background: var(--surface);
+    border: 2px solid #333333;
+    background: #e8e8e8;
     border-radius: 6px;
     cursor: pointer;
     font-size: 13px;
@@ -140,7 +141,8 @@ body {
 }
 
 .angle-btn:hover {
-    background: #f8f8f8;
+    background: #d0d0d0;
+    border-color: #222;
 }
 
 .angle-btn.active {
@@ -187,9 +189,9 @@ body {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.18s ease;
-    background: var(--muted);
+    background: #e8e8e8;
     color: var(--text);
-    border: 2px solid var(--border);
+    border: 2px solid #333333;
 }
 
 .btn:hover {
@@ -203,8 +205,8 @@ body {
 }
 
 .number-btn {
-    background: #ffffff; /* keep numbers bright on muted background */
-    border: 2px solid var(--border);
+    background: #f0f0f0;
+    border: 2px solid #333333;
 }
 
 .number-btn:hover {
@@ -378,8 +380,8 @@ body {
 .mat-tab,
 .vec-tab {
     padding: 8px 12px;
-    border: 2px solid var(--border);
-    background: var(--surface);
+    border: 2px solid #333333;
+    background: #e8e8e8;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 700;
@@ -391,8 +393,8 @@ body {
 .eq-tab:hover,
 .mat-tab:hover,
 .vec-tab:hover {
-    background: #f8f8f8;
-    border-color: var(--accent);
+    background: #d0d0d0;
+    border-color: #222;
 }
 
 .eq-tab.active,
