@@ -339,7 +339,7 @@ Paste data (comma-separated) → Click measure → View statistic
 
 ## 🎯 You're Ready!
 
-Your advanced scientific calculator is **100% complete** and ready to use.
+Your VICK ADVANCE MATHS CALCULATOR is **100% complete** and ready to use.
 
 ### To Start Using:
 1. Open `index.html` in your web browser
@@ -392,7 +392,7 @@ You now have a **professional-grade scientific calculator** with:
 
 ---
 
-**Your Advanced Scientific Calculator is Ready!**
+**Your VICK ADVANCE MATHS CALCULATOR is Ready!**
 
 Built with precision, clarity, and professional standards. 
 

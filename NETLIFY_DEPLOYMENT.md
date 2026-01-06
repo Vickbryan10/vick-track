@@ -39,7 +39,7 @@ git init
 git add .
 
 # Commit
-git commit -m "Advanced Scientific Calculator - PWA ready"
+git commit -m "VICK ADVANCE MATHS CALCULATOR - PWA ready"
 ```
 
 ### Step 2: Push to GitHub/GitLab/Bitbucket

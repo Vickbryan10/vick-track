@@ -413,7 +413,7 @@ cos(θ) = (u·v)/(|u||v|)
 
 ## 🚀 Ready to Use!
 
-Your advanced scientific calculator is **100% complete and ready to use**.
+Your VICK ADVANCE MATHS CALCULATOR is **100% complete and ready to use**.
 
 Simply open `index.html` in your web browser and start calculating!
 
