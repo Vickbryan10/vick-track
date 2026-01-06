@@ -293,6 +293,19 @@ input:focus, textarea:focus, select:focus {
     background: #ffffff;
 }
 
+/* Ensure focused/active inputs always show readable text and caret */
+input, textarea, select, .display, .mat-input, .matrix-input input, .system-input input {
+    color: var(--text);
+    -webkit-text-fill-color: var(--text);
+    caret-color: var(--text);
+}
+
+input:focus, textarea:focus, select:focus, .display:focus, .eq-content input:focus, .mat-content input:focus, .vec-content input:focus {
+    color: var(--text) !important;
+    -webkit-text-fill-color: var(--text) !important;
+    caret-color: var(--text) !important;
+}
+
 ::placeholder {
     color: #666666;
     opacity: 1;
