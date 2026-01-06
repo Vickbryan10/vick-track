@@ -10,9 +10,7 @@ const ASSETS_TO_CACHE = [
     '/index.html',
     '/calculator.js',
     '/styles.css',
-    '/manifest.json',
-    '/av-192.png',
-    '/av-512.png'
+    '/manifest.json'
 ];
 
 // Install event - cache essential assets
