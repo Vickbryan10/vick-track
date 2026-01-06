@@ -187,7 +187,7 @@ body {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.18s ease;
-    background: var(--surface);
+    background: var(--muted);
     color: var(--text);
     border: 2px solid var(--border);
 }
@@ -203,7 +203,7 @@ body {
 }
 
 .number-btn {
-    background: var(--surface);
+    background: #ffffff; /* keep numbers bright on muted background */
     border: 2px solid var(--border);
 }
 
@@ -378,29 +378,29 @@ body {
 .mat-tab,
 .vec-tab {
     padding: 8px 12px;
-    border: 2px solid #ddd;
-    background: white;
+    border: 2px solid var(--border);
+    background: var(--surface);
     border-radius: 6px;
     cursor: pointer;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 700;
+    font-size: 13px;
     white-space: nowrap;
-    transition: all 0.3s ease;
+    transition: all 0.18s ease;
 }
 
 .eq-tab:hover,
 .mat-tab:hover,
 .vec-tab:hover {
-    background: #f0f0f0;
-    border-color: #667eea;
+    background: #f8f8f8;
+    border-color: var(--accent);
 }
 
 .eq-tab.active,
 .mat-tab.active,
 .vec-tab.active {
-    background: #667eea;
+    background: var(--accent);
     color: white;
-    border-color: #667eea;
+    border-color: var(--accent);
 }
 
 .eq-content,
@@ -408,7 +408,7 @@ body {
 .vec-content {
     display: none;
     padding: 15px;
-    background: #f9f9f9;
+    background: var(--muted);
     border-radius: 8px;
     margin-bottom: 15px;
 }

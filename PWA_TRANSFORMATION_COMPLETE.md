@@ -2,7 +2,7 @@
 
 ## Your Calculator is Now Android & Offline Ready
 
-Your Advanced Scientific Calculator has been successfully transformed into a **Production-Ready Progressive Web App (PWA)** with complete offline support and Android installation capabilities.
+Your VICK ADVANCE MATHS CALCULATOR has been successfully transformed into a **Production-Ready Progressive Web App (PWA)** with complete offline support and Android installation capabilities.
 
 ---
 
@@ -182,9 +182,9 @@ git push origin main
 - **Status**: Production-ready
 
 ### PWA Manifest
-- **Name**: Advanced Scientific Calculator
+- **Name**: VICK ADVANCE MATHS CALCULATOR
 - **Icons**: 192x512px (multiple sizes)
-- **Colors**: #667eea (theme)
+- **Colors**: #0B3D91 (theme)
 - **Display**: Standalone (fullscreen)
 - **Shortcuts**: Quick access to modes
 - **Status**: Complete & tested

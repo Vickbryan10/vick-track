@@ -2,7 +2,7 @@
 
 ## Progressive Web App (PWA) - Complete Guide
 
-Your Advanced Scientific Calculator is now a **Progressive Web App** that works on Android, iOS, and all devices with offline support!
+Your VICK ADVANCE MATHS CALCULATOR is now a **Progressive Web App** that works on Android, iOS, and all devices with offline support!
 
 ---
 

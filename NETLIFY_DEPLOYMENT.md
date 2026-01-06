@@ -1,6 +1,6 @@
 # 🚀 Netlify Deployment Guide
 
-## Complete Setup for Advanced Scientific Calculator
+## Complete Setup for VICK ADVANCE MATHS CALCULATOR
 
 Your calculator is configured to work perfectly on Netlify with offline support and PWA features.
 

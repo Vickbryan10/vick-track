@@ -1,9 +1,9 @@
 /**
- * Service Worker for Advanced Scientific Calculator
+ * Service Worker for Vick Advance Maths Calculator
  * Enables offline functionality and caching
  */
 
-const CACHE_NAME = 'scientific-calculator-v1';
+const CACHE_NAME = 'vick-advance-maths-calculator-v1';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',

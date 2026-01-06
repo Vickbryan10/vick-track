@@ -1,4 +1,4 @@
-# 🧮 Advanced Further Maths Scientific Calculator
+# 🧮 Vick Advance Maths Calculator
 
 A powerful, professional-grade scientific calculator with advanced equation solving, matrix operations, vector calculations, and comprehensive statistical analysis. Built with clean, documented code for educational and practical use.
 

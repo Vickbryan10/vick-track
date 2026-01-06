@@ -1,6 +1,6 @@
 # 🎓 FINAL PROJECT SUMMARY
 
-## ✅ Advanced Scientific Calculator - COMPLETE
+## ✅ VICK ADVANCE MATHS CALCULATOR - COMPLETE
 
 Your professional-grade scientific calculator has been successfully developed with **production-quality code**.
 

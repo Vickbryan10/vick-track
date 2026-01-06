@@ -1,4 +1,4 @@
-# ✨ IMPLEMENTATION SUMMARY - Advanced Scientific Calculator
+# ✨ IMPLEMENTATION SUMMARY - VICK ADVANCE MATHS CALCULATOR
 
 ## 🎉 Project Complete!
 

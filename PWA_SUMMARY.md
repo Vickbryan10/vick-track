@@ -2,7 +2,7 @@
 
 ## ✨ Your Calculator is Now a Progressive Web App
 
-Your Advanced Scientific Calculator has been transformed into a **Progressive Web App (PWA)** with full offline support, Android installation, and deployment-ready configuration.
+Your Vick Advance Maths Calculator has been transformed into a **Progressive Web App (PWA)** with full offline support, Android installation, and deployment-ready configuration.
 
 ---
 
@@ -125,11 +125,11 @@ netlify deploy --prod
 - **Offline Support**: Complete functionality
 - **Background Sync**: Ready for future enhancements
 
-### PWA Configuration
+-### PWA Configuration
 
-- **Name**: Advanced Scientific Calculator
-- **Short Name**: Sci Calculator
-- **Theme Color**: Purple (#667eea)
+- **Name**: Vick Advance Maths Calculator
+- **Short Name**: Vick Maths
+- **Theme Color**: Dark Blue (#0B3D91)
 - **Standalone**: Yes (no browser UI)
 - **Icons**: Multiple sizes (192x512px)
 

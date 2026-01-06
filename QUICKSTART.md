@@ -415,7 +415,7 @@ All code has been:
 
 ---
 
-**Your Advanced Scientific Calculator is Ready to Use!** 🚀
+**Your VICK ADVANCE MATHS CALCULATOR is Ready to Use!** 🚀
 
 For any questions, refer to:
 - README.md for features and usage
