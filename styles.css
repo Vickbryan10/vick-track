@@ -259,19 +259,43 @@ body {
 
 #statsInput {
     width: 100%;
-    padding: 15px;
-    border: 2px solid #e0e0e0;
+    padding: 14px;
+    border: 2px solid #333333;
     border-radius: 8px;
     font-family: 'Courier New', monospace;
     font-size: 14px;
     resize: vertical;
     min-height: 80px;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.18s ease, background 0.18s ease;
+    background: #f0f0f0;
+    color: var(--text);
 }
 
 #statsInput:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: var(--accent);
+    background: #ffffff;
+}
+
+/* General input styles for visibility */
+input[type="number"], input[type="text"], textarea, select, .mat-input, .matrix-input input, .system-input input {
+    background: #f0f0f0;
+    color: var(--text);
+    border: 2px solid #333333;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #ffffff;
+}
+
+::placeholder {
+    color: #666666;
+    opacity: 1;
 }
 
 /* History Section */
