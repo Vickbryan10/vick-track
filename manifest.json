@@ -16,58 +16,58 @@
   "categories": ["productivity", "utilities"],
   "screenshots": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230B3D91' width='192' height='192'/><text x='96' y='96' font-size='80' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>π</text></svg>",
+      "src": "/av-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%230B3D91' width='512' height='512'/><text x='256' y='256' font-size='200' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial'>π</text></svg>",
+      "src": "/av-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     }
   ],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230B3D91' width='192' height='192' rx='45'/><text x='96' y='96' font-size='100' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif' font-weight='bold'>π</text></svg>",
+      "src": "/av-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%230B3D91' width='512' height='512' rx='120'/><text x='256' y='256' font-size='280' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif' font-weight='bold'>π</text></svg>",
+      "src": "/av-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
     {
       "name": "Basic Calculator",
-      "short_name": "Basic",
-      "description": "Open basic calculator mode",
-      "url": "/index.html?mode=basic",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23f0f0f0' width='192' height='192' rx='45'/><text x='96' y='96' font-size='80' fill='%230B3D91' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-weight='bold'>+</text></svg>",
-          "sizes": "192x192",
-          "type": "image/svg+xml"
-        }
-      ]
+        "short_name": "Basic",
+        "description": "Open basic calculator mode",
+        "url": "/index.html?mode=basic",
+        "icons": [
+          {
+            "src": "/av-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          }
+        ]
     },
     {
       "name": "Equation Solver",
-      "short_name": "Equations",
-      "description": "Open equation solver",
-      "url": "/index.html?mode=equation",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23f0f0f0' width='192' height='192' rx='45'/><text x='96' y='96' font-size='60' fill='%230B3D91' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-weight='bold'>=</text></svg>",
-          "sizes": "192x192",
-          "type": "image/svg+xml"
-        }
-      ]
+        "short_name": "Equations",
+        "description": "Open equation solver",
+        "url": "/index.html?mode=equation",
+        "icons": [
+          {
+            "src": "/av-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          }
+        ]
     }
   ],
   "share_target": {
