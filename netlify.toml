@@ -1,0 +1,77 @@
+# Netlify Configuration for Advanced Scientific Calculator
+# Optimized for PWA and offline support
+
+[build]
+  command = "echo 'No build required - static site'"
+  publish = "."
+  environment = { NODE_VERSION = "18" }
+
+[[headers]]
+  # Apply to all pages
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  # HTML files - don't cache aggressively
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+    Content-Type = "text/html; charset=utf-8"
+
+[[headers]]
+  # Service Worker - short cache
+  for = "/service-worker.js"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "application/javascript; charset=utf-8"
+    Service-Worker-Allowed = "/"
+
+[[headers]]
+  # Manifest file - short cache
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+    Content-Type = "application/manifest+json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  # CSS and JavaScript - cache long term
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "text/css; charset=utf-8"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
+  # Images - cache long term
+  for = "/*.{png,jpg,jpeg,gif,svg,webp}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[redirects]]
+  # Redirect 404s to index.html for SPA routing
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  # Production context
+  environment = { ENVIRONMENT = "production" }
+
+[context.deploy-preview]
+  # Deploy preview context
+  environment = { ENVIRONMENT = "preview" }
+
+[context.branch-deploy]
+  # Branch deploy context
+  environment = { ENVIRONMENT = "branch" }

@@ -345,3 +345,201 @@ body {
         border: 1px solid #ddd;
     }
 }
+
+/* ==================== EQUATION SOLVER STYLES ====================*/
+
+.equation-tabs,
+.matrix-tabs,
+.vector-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.eq-tab,
+.mat-tab,
+.vec-tab {
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.eq-tab:hover,
+.mat-tab:hover,
+.vec-tab:hover {
+    background: #f0f0f0;
+    border-color: #667eea;
+}
+
+.eq-tab.active,
+.mat-tab.active,
+.vec-tab.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.eq-content,
+.mat-content,
+.vec-content {
+    display: none;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.eq-content.active,
+.mat-content.active,
+.vec-content.active {
+    display: block;
+}
+
+.eq-format {
+    font-family: 'Courier New', monospace;
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #667eea;
+    text-align: center;
+}
+
+.eq-content input,
+.mat-content input,
+.vec-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.eq-content input:focus,
+.mat-content input:focus,
+.vec-content input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+}
+
+.result-box {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+    border: 2px solid #667eea;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #333;
+    line-height: 1.6;
+    min-height: 40px;
+    overflow-x: auto;
+}
+
+.system-input {
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border-left: 3px solid #667eea;
+}
+
+.system-input span {
+    display: block;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.system-input input {
+    display: inline-block;
+    width: calc(33.33% - 8px);
+    margin-right: 8px;
+    margin-bottom: 0;
+}
+
+/* Matrix Input Styles */
+.matrix-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    background: white;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.matrix-input input,
+.mat-input,
+.mat-inv-input,
+.mat-trans-input,
+.mat-mul-a,
+.mat-mul-b {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.mat-content h4 {
+    margin-top: 12px;
+    margin-bottom: 8px;
+    color: #667eea;
+    font-size: 13px;
+}
+
+/* Vector Input Styles */
+.vec-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+/* Statistics Enhancements */
+.stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 600px) {
+    .equation-tabs,
+    .matrix-tabs,
+    .vector-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .matrix-input {
+        flex-direction: column;
+    }
+    
+    .matrix-input input {
+        width: 100%;
+    }
+    
+    .system-input input {
+        width: calc(50% - 4px);
+    }
+}

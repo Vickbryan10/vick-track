@@ -2,9 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Further Maths Scientific Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="description" content="Professional scientific calculator for advanced mathematics with equation solvers, matrix operations, and statistical analysis">
+    <meta name="theme-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sci Calculator">
+    <meta name="application-name" content="Advanced Scientific Calculator">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea;stop-opacity:1' /><stop offset='100%' style='stop-color:%23764ba2;stop-opacity:1' /></linearGradient></defs><rect fill='url(%23grad)' width='192' height='192' rx='45'/><text x='96' y='96' font-size='100' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif' font-weight='bold'>π</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%23667eea;stop-opacity:1' /><stop offset='100%' style='stop-color:%23764ba2;stop-opacity:1' /></linearGradient></defs><rect fill='url(%23grad)' width='180' height='180' rx='40'/><text x='90' y='90' font-size='100' fill='white' text-anchor='middle' dominant-baseline='middle' font-family='Arial, sans-serif' font-weight='bold'>π</text></svg>">
+    
+    <!-- Offline Support -->
+    <meta name="offline-enabled" content="yes">
+    
+    <!-- Security -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="color-scheme" content="light dark">
+    
+    <title>Advanced Scientific Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Safe area support for notched devices */
+        body {
+            padding: max(0px, env(safe-area-inset-top)) max(0px, env(safe-area-inset-right)) 
+                    max(0px, env(safe-area-inset-bottom)) max(0px, env(safe-area-inset-left));
+        }
+        
+        /* Prevent zoom on iOS input focus */
+        input, textarea, select {
+            font-size: 16px !important;
+        }
+        
+        /* Disable text selection on buttons */
+        button {
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -17,6 +58,9 @@
             <div class="mode-toggle">
                 <button class="mode-btn active" data-mode="basic">Basic</button>
                 <button class="mode-btn" data-mode="advanced">Advanced</button>
+                <button class="mode-btn" data-mode="equation">Equations</button>
+                <button class="mode-btn" data-mode="matrix">Matrix</button>
+                <button class="mode-btn" data-mode="vector">Vector</button>
                 <button class="mode-btn" data-mode="statistics">Statistics</button>
             </div>
             
@@ -100,7 +144,205 @@
                     <button class="btn" onclick="calculateVariance()">Variance</button>
                     <button class="btn" onclick="calculateSum()">Sum (Σ)</button>
                     <button class="btn" onclick="calculateCount()">Count (n)</button>
+                    <button class="btn" onclick="calculateQuartiles()">Quartiles</button>
+                    <button class="btn" onclick="calculateSkewness()">Skewness</button>
+                    <button class="btn" onclick="calculateKurtosis()">Kurtosis</button>
                     <button class="btn clear-btn" onclick="clearStats()">Clear</button>
+                </div>
+            </div>
+            
+            <!-- Equation Solver Mode -->
+            <div id="equation-mode" class="mode-content">
+                <div class="equation-tabs">
+                    <button class="eq-tab active" onclick="switchEquationType('linear')">Linear</button>
+                    <button class="eq-tab" onclick="switchEquationType('quadratic')">Quadratic</button>
+                    <button class="eq-tab" onclick="switchEquationType('cubic')">Cubic</button>
+                    <button class="eq-tab" onclick="switchEquationType('system')">System</button>
+                </div>
+                
+                <!-- Linear Equation -->
+                <div id="linear-solver" class="eq-content active">
+                    <p class="eq-format">ax + b = 0</p>
+                    <input type="number" id="lin-a" placeholder="a" value="1">
+                    <input type="number" id="lin-b" placeholder="b" value="0">
+                    <button class="btn equals-btn" onclick="solveLinear()">Solve ax + b = 0</button>
+                    <div id="linear-result" class="result-box"></div>
+                </div>
+                
+                <!-- Quadratic Equation -->
+                <div id="quadratic-solver" class="eq-content">
+                    <p class="eq-format">ax² + bx + c = 0</p>
+                    <input type="number" id="quad-a" placeholder="a" value="1">
+                    <input type="number" id="quad-b" placeholder="b" value="0">
+                    <input type="number" id="quad-c" placeholder="c" value="0">
+                    <button class="btn equals-btn" onclick="solveQuadratic()">Solve ax² + bx + c = 0</button>
+                    <div id="quadratic-result" class="result-box"></div>
+                </div>
+                
+                <!-- Cubic Equation -->
+                <div id="cubic-solver" class="eq-content">
+                    <p class="eq-format">ax³ + bx² + cx + d = 0</p>
+                    <input type="number" id="cub-a" placeholder="a" value="1">
+                    <input type="number" id="cub-b" placeholder="b" value="0">
+                    <input type="number" id="cub-c" placeholder="c" value="0">
+                    <input type="number" id="cub-d" placeholder="d" value="0">
+                    <button class="btn equals-btn" onclick="solveCubic()">Solve ax³ + bx² + cx + d = 0</button>
+                    <div id="cubic-result" class="result-box"></div>
+                </div>
+                
+                <!-- System of Equations -->
+                <div id="system-solver" class="eq-content">
+                    <p class="eq-format">Solve 2×2 System</p>
+                    <div class="system-input">
+                        <span>a₁x + b₁y = c₁</span>
+                        <input type="number" id="sys-a1" placeholder="a₁" value="1">
+                        <input type="number" id="sys-b1" placeholder="b₁" value="1">
+                        <input type="number" id="sys-c1" placeholder="c₁" value="0">
+                    </div>
+                    <div class="system-input">
+                        <span>a₂x + b₂y = c₂</span>
+                        <input type="number" id="sys-a2" placeholder="a₂" value="1">
+                        <input type="number" id="sys-b2" placeholder="b₂" value="1">
+                        <input type="number" id="sys-c2" placeholder="c₂" value="0">
+                    </div>
+                    <button class="btn equals-btn" onclick="solve2x2System()">Solve System</button>
+                    <div id="system-result" class="result-box"></div>
+                </div>
+            </div>
+            
+            <!-- Matrix Mode -->
+            <div id="matrix-mode" class="mode-content">
+                <div class="matrix-tabs">
+                    <button class="mat-tab active" onclick="switchMatrixType('det')">Determinant</button>
+                    <button class="mat-tab" onclick="switchMatrixType('inverse')">Inverse</button>
+                    <button class="mat-tab" onclick="switchMatrixType('transpose')">Transpose</button>
+                    <button class="mat-tab" onclick="switchMatrixType('multiply')">Multiply</button>
+                </div>
+                
+                <!-- Determinant -->
+                <div id="det-calc" class="mat-content active">
+                    <p>2×2 or 3×3 Matrix Determinant</p>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[0][0]" class="mat-input">
+                        <input type="number" placeholder="m[0][1]" class="mat-input">
+                        <input type="number" placeholder="m[0][2]" class="mat-input" style="display:none;">
+                    </div>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[1][0]" class="mat-input">
+                        <input type="number" placeholder="m[1][1]" class="mat-input">
+                        <input type="number" placeholder="m[1][2]" class="mat-input" style="display:none;">
+                    </div>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[2][0]" class="mat-input" style="display:none;">
+                        <input type="number" placeholder="m[2][1]" class="mat-input" style="display:none;">
+                        <input type="number" placeholder="m[2][2]" class="mat-input" style="display:none;">
+                    </div>
+                    <button class="btn" onclick="toggleMatrixSize()">Toggle 3×3</button>
+                    <button class="btn equals-btn" onclick="calculateDeterminant()">Calculate Det</button>
+                    <div id="matrix-result" class="result-box"></div>
+                </div>
+                
+                <!-- Inverse -->
+                <div id="inverse-calc" class="mat-content">
+                    <p>2×2 Matrix Inverse</p>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[0][0]" class="mat-inv-input">
+                        <input type="number" placeholder="m[0][1]" class="mat-inv-input">
+                    </div>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[1][0]" class="mat-inv-input">
+                        <input type="number" placeholder="m[1][1]" class="mat-inv-input">
+                    </div>
+                    <button class="btn equals-btn" onclick="calculateInverse()">Calculate Inverse</button>
+                    <div id="inverse-result" class="result-box"></div>
+                </div>
+                
+                <!-- Transpose -->
+                <div id="transpose-calc" class="mat-content">
+                    <p>Matrix Transpose</p>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[0][0]" class="mat-trans-input">
+                        <input type="number" placeholder="m[0][1]" class="mat-trans-input">
+                    </div>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="m[1][0]" class="mat-trans-input">
+                        <input type="number" placeholder="m[1][1]" class="mat-trans-input">
+                    </div>
+                    <button class="btn equals-btn" onclick="calculateTranspose()">Calculate Transpose</button>
+                    <div id="transpose-result" class="result-box"></div>
+                </div>
+                
+                <!-- Multiply -->
+                <div id="multiply-calc" class="mat-content">
+                    <p>Matrix Multiplication: A × B</p>
+                    <h4>Matrix A (2×2):</h4>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="a[0][0]" class="mat-mul-a">
+                        <input type="number" placeholder="a[0][1]" class="mat-mul-a">
+                    </div>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="a[1][0]" class="mat-mul-a">
+                        <input type="number" placeholder="a[1][1]" class="mat-mul-a">
+                    </div>
+                    <h4>Matrix B (2×2):</h4>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="b[0][0]" class="mat-mul-b">
+                        <input type="number" placeholder="b[0][1]" class="mat-mul-b">
+                    </div>
+                    <div class="matrix-input">
+                        <input type="number" placeholder="b[1][0]" class="mat-mul-b">
+                        <input type="number" placeholder="b[1][1]" class="mat-mul-b">
+                    </div>
+                    <button class="btn equals-btn" onclick="calculateMultiply()">Multiply Matrices</button>
+                    <div id="multiply-result" class="result-box"></div>
+                </div>
+            </div>
+            
+            <!-- Vector Mode -->
+            <div id="vector-mode" class="mode-content">
+                <div class="vector-tabs">
+                    <button class="vec-tab active" onclick="switchVectorType('magnitude')">Magnitude</button>
+                    <button class="vec-tab" onclick="switchVectorType('dot')">Dot Product</button>
+                    <button class="vec-tab" onclick="switchVectorType('cross')">Cross Product</button>
+                    <button class="vec-tab" onclick="switchVectorType('angle')">Angle</button>
+                </div>
+                
+                <!-- Magnitude -->
+                <div id="magnitude-calc" class="vec-content active">
+                    <p>Vector Magnitude |v|</p>
+                    <input type="text" id="mag-vector" placeholder="Enter components: 3, 4, 5">
+                    <button class="btn equals-btn" onclick="calculateMagnitude()">Calculate |v|</button>
+                    <div id="magnitude-result" class="result-box"></div>
+                </div>
+                
+                <!-- Dot Product -->
+                <div id="dot-calc" class="vec-content">
+                    <p>Dot Product: u · v</p>
+                    <input type="text" id="dot-u" placeholder="Vector u: 1, 2, 3">
+                    <input type="text" id="dot-v" placeholder="Vector v: 4, 5, 6">
+                    <button class="btn equals-btn" onclick="calculateDotProduct()">Calculate u · v</button>
+                    <div id="dot-result" class="result-box"></div>
+                </div>
+                
+                <!-- Cross Product -->
+                <div id="cross-calc" class="vec-content">
+                    <p>Cross Product: u × v (3D only)</p>
+                    <input type="text" id="cross-u" placeholder="Vector u: 1, 0, 0">
+                    <input type="text" id="cross-v" placeholder="Vector v: 0, 1, 0">
+                    <button class="btn equals-btn" onclick="calculateCrossProduct()">Calculate u × v</button>
+                    <div id="cross-result" class="result-box"></div>
+                </div>
+                
+                <!-- Angle Between -->
+                <div id="angle-calc" class="vec-content">
+                    <p>Angle Between Vectors</p>
+                    <input type="text" id="angle-u" placeholder="Vector u: 1, 0">
+                    <input type="text" id="angle-v" placeholder="Vector v: 1, 1">
+                    <button class="btn" onclick="toggleAngleMode()">
+                        Mode: <span id="angle-mode-display">DEG</span>
+                    </button>
+                    <button class="btn equals-btn" onclick="calculateAngleBetween()">Calculate Angle</button>
+                    <div id="angle-result" class="result-box"></div>
                 </div>
             </div>
             
@@ -112,5 +354,55 @@
     </div>
     
     <script src="calculator.js"></script>
+    
+    <!-- Service Worker Registration for Offline Support -->
+    <script>
+        // Register service worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('[App] Service Worker registered successfully:', registration);
+                        
+                        // Check for updates periodically
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000); // Check every minute
+                    })
+                    .catch(error => {
+                        console.log('[App] Service Worker registration failed:', error);
+                    });
+                
+                // Listen for controller change (updates)
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    console.log('[App] New service worker activated');
+                });
+            });
+        }
+        
+        // Handle app installation
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('[App] Install prompt ready');
+        });
+        
+        // Log when app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('[App] PWA was installed');
+            deferredPrompt = null;
+        });
+        
+        // Handle app launch from home screen
+        if (window.navigator.standalone === true) {
+            console.log('[App] Running as standalone PWA');
+        }
+        
+        // Request notification permission for future features
+        if ('Notification' in window && Notification.permission === 'default') {
+            // Don't auto-request, wait for user action
+        }
+    </script>
 </body>
 </html>

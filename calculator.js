@@ -10,7 +10,66 @@ let shouldResetDisplay = false;
 document.addEventListener('DOMContentLoaded', function() {
     setupModeButtons();
     setupAngleModeButtons();
+    initializeOfflineSupport();
 });
+
+/**
+ * Initialize offline support and PWA features
+ */
+function initializeOfflineSupport() {
+    // Add offline status indicator
+    const statusDiv = document.createElement('div');
+    statusDiv.id = 'offline-status';
+    statusDiv.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #ff6b6b;
+        color: white;
+        padding: 8px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        display: none;
+        z-index: 10000;
+        font-family: Arial, sans-serif;
+    `;
+    statusDiv.textContent = '📡 Offline - App working locally';
+    document.body.insertBefore(statusDiv, document.body.firstChild);
+    
+    // Monitor online/offline status
+    function updateOnlineStatus() {
+        const statusDiv = document.getElementById('offline-status');
+        if (!navigator.onLine) {
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = '📡 Offline - App working locally (service worker active)';
+            statusDiv.style.background = '#ff6b6b';
+        } else {
+            statusDiv.style.display = 'none';
+        }
+    }
+    
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    // Initial check
+    updateOnlineStatus();
+    
+    // Request persistent storage (optional)
+    if (navigator.storage && navigator.storage.persist) {
+        navigator.storage.persist().then(persistent => {
+            console.log('Persistent storage granted:', persistent);
+        });
+    }
+    
+    // Log service worker status
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            console.log('[Calculator] Service Worker registrations:', registrations.length);
+        });
+    }
+}
 
 /**
  * Setup mode switching functionality
@@ -599,4 +658,592 @@ function updateHistoryDisplay() {
     historyDiv.innerHTML = history.map((item, index) => 
         `<div class="history-item">${index + 1}. ${item}</div>`
     ).join('');
+}
+
+// ==================== ADVANCED EQUATION SOLVERS ====================
+
+/**
+ * Switch equation type in solver
+ */
+function switchEquationType(type) {
+    const contents = document.querySelectorAll('.eq-content');
+    const tabs = document.querySelectorAll('.eq-tab');
+    
+    contents.forEach(content => content.classList.remove('active'));
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    document.getElementById(`${type}-solver`).classList.add('active');
+    event.target.classList.add('active');
+}
+
+/**
+ * Solve linear equation ax + b = 0
+ */
+function solveLinear() {
+    try {
+        const a = parseFloat(document.getElementById('lin-a').value);
+        const b = parseFloat(document.getElementById('lin-b').value);
+        
+        if (isNaN(a) || isNaN(b)) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        if (a === 0) {
+            if (b === 0) {
+                display.value = 'All numbers are solutions';
+            } else {
+                display.value = 'No solution exists';
+            }
+        } else {
+            const x = -b / a;
+            display.value = `x = ${formatResult(x)}`;
+            addToHistory(`Linear: ${a}x + ${b} = 0 → x = ${formatResult(x)}`);
+        }
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Linear solver error:', e);
+    }
+}
+
+/**
+ * Solve quadratic equation ax² + bx + c = 0
+ */
+function solveQuadratic() {
+    try {
+        const a = parseFloat(document.getElementById('quad-a').value);
+        const b = parseFloat(document.getElementById('quad-b').value);
+        const c = parseFloat(document.getElementById('quad-c').value);
+        
+        if (isNaN(a) || isNaN(b) || isNaN(c)) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        if (a === 0) {
+            throw new Error('Coefficient a cannot be zero');
+        }
+        
+        const discriminant = b * b - 4 * a * c;
+        let result = `Equation: ${a}x² + ${b}x + ${c} = 0\n`;
+        result += `Discriminant (Δ) = ${formatResult(discriminant)}\n\n`;
+        
+        if (discriminant > 0) {
+            const sqrtDisc = Math.sqrt(discriminant);
+            const x1 = (-b + sqrtDisc) / (2 * a);
+            const x2 = (-b - sqrtDisc) / (2 * a);
+            result += `Two distinct real roots:\n`;
+            result += `x₁ = ${formatResult(x1)}\n`;
+            result += `x₂ = ${formatResult(x2)}`;
+            addToHistory(`Quadratic: ${a}x² + ${b}x + ${c} = 0 → x₁=${formatResult(x1)}, x₂=${formatResult(x2)}`);
+        } else if (discriminant === 0) {
+            const x = -b / (2 * a);
+            result += `One repeated real root:\n`;
+            result += `x = ${formatResult(x)}`;
+            addToHistory(`Quadratic: ${a}x² + ${b}x + ${c} = 0 → x=${formatResult(x)} (repeated)`);
+        } else {
+            const sqrtDisc = Math.sqrt(-discriminant);
+            const realPart = -b / (2 * a);
+            const imagPart = sqrtDisc / (2 * a);
+            result += `Two complex conjugate roots:\n`;
+            result += `x₁ = ${formatResult(realPart)} + ${formatResult(imagPart)}i\n`;
+            result += `x₂ = ${formatResult(realPart)} - ${formatResult(imagPart)}i`;
+            addToHistory(`Quadratic complex roots: x₁=${formatResult(realPart)}+${formatResult(imagPart)}i`);
+        }
+        
+        document.getElementById('quadratic-result').textContent = result;
+        display.value = discriminant > 0 ? 'Two real roots' : (discriminant === 0 ? 'One root' : 'Two complex roots');
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Quadratic solver error:', e);
+    }
+}
+
+/**
+ * Solve cubic equation ax³ + bx² + cx + d = 0
+ */
+function solveCubic() {
+    try {
+        const a = parseFloat(document.getElementById('cub-a').value);
+        const b = parseFloat(document.getElementById('cub-b').value);
+        const c = parseFloat(document.getElementById('cub-c').value);
+        const d = parseFloat(document.getElementById('cub-d').value);
+        
+        if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(d)) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        if (a === 0) {
+            solveQuadratic();
+            return;
+        }
+        
+        // Use Newton-Raphson method to find roots
+        const roots = findCubicRootsNumerical(a, b, c, d);
+        
+        let result = `Equation: ${a}x³ + ${b}x² + ${c}x + ${d} = 0\n\n`;
+        result += `Approximate roots:\n`;
+        roots.forEach((root, idx) => {
+            if (root.imag === undefined || root.imag === 0) {
+                result += `x${idx + 1} = ${formatResult(root.real || root)}\n`;
+            } else {
+                result += `x${idx + 1} = ${formatResult(root.real)} ${root.imag >= 0 ? '+' : ''} ${formatResult(root.imag)}i\n`;
+            }
+        });
+        
+        document.getElementById('cubic-result').textContent = result;
+        display.value = 'Cubic roots calculated';
+        addToHistory(`Cubic solved: ${a}x³ + ${b}x² + ${c}x + ${d} = 0`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Cubic solver error:', e);
+    }
+}
+
+/**
+ * Find cubic roots using numerical methods
+ */
+function findCubicRootsNumerical(a, b, c, d) {
+    const roots = [];
+    const testPoints = [-10, -5, -1, 0, 1, 5, 10];
+    
+    // Try Newton-Raphson from different starting points
+    testPoints.forEach(start => {
+        let x = start;
+        for (let i = 0; i < 50; i++) {
+            const f = a*x*x*x + b*x*x + c*x + d;
+            const df = 3*a*x*x + 2*b*x + c;
+            
+            if (Math.abs(df) < 1e-15) break;
+            const xNew = x - f / df;
+            
+            if (Math.abs(xNew - x) < 1e-10) {
+                // Check if root is new
+                const isNew = roots.every(r => Math.abs(r - x) > 0.01);
+                if (isNew && Math.abs(f) < 1e-6) {
+                    roots.push(x);
+                }
+                break;
+            }
+            x = xNew;
+        }
+    });
+    
+    return roots.length > 0 ? roots : [0]; // Fallback
+}
+
+/**
+ * Solve 2×2 system of equations
+ */
+function solve2x2System() {
+    try {
+        const a1 = parseFloat(document.getElementById('sys-a1').value);
+        const b1 = parseFloat(document.getElementById('sys-b1').value);
+        const c1 = parseFloat(document.getElementById('sys-c1').value);
+        const a2 = parseFloat(document.getElementById('sys-a2').value);
+        const b2 = parseFloat(document.getElementById('sys-b2').value);
+        const c2 = parseFloat(document.getElementById('sys-c2').value);
+        
+        if ([a1, b1, c1, a2, b2, c2].some(isNaN)) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        const det = a1*b2 - a2*b1;
+        
+        let result = `System:\n`;
+        result += `${a1}x + ${b1}y = ${c1}\n`;
+        result += `${a2}x + ${b2}y = ${c2}\n\n`;
+        
+        if (Math.abs(det) < 1e-10) {
+            result += 'No unique solution (lines are parallel or identical)';
+            display.value = 'No unique solution';
+        } else {
+            const x = (c1*b2 - c2*b1) / det;
+            const y = (a1*c2 - a2*c1) / det;
+            result += `Solution:\n`;
+            result += `x = ${formatResult(x)}\n`;
+            result += `y = ${formatResult(y)}`;
+            display.value = `x = ${formatResult(x)}, y = ${formatResult(y)}`;
+            addToHistory(`System: x=${formatResult(x)}, y=${formatResult(y)}`);
+        }
+        
+        document.getElementById('system-result').textContent = result;
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('System solver error:', e);
+    }
+}
+
+// ==================== MATRIX OPERATIONS ====================
+
+/**
+ * Switch matrix operation type
+ */
+function switchMatrixType(type) {
+    const contents = document.querySelectorAll('.mat-content');
+    const tabs = document.querySelectorAll('.mat-tab');
+    
+    contents.forEach(content => content.classList.remove('active'));
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    document.getElementById(`${type}-calc`).classList.add('active');
+    event.target.classList.add('active');
+}
+
+/**
+ * Toggle between 2×2 and 3×3 matrix
+ */
+function toggleMatrixSize() {
+    const inputs = document.querySelectorAll('.matrix-input:nth-child(n+3) .mat-input');
+    inputs.forEach(input => {
+        const display = input.style.display;
+        input.style.display = display === 'none' ? 'block' : 'none';
+    });
+}
+
+/**
+ * Calculate determinant
+ */
+function calculateDeterminant() {
+    try {
+        const inputs = document.querySelectorAll('.mat-input:not([style*="display: none"])');
+        const size = inputs.length === 4 ? 2 : 3;
+        
+        if (size === 2) {
+            const m = [
+                [parseFloat(inputs[0].value), parseFloat(inputs[1].value)],
+                [parseFloat(inputs[2].value), parseFloat(inputs[3].value)]
+            ];
+            
+            if (m.some(row => row.some(isNaN))) {
+                throw new Error('Please enter valid numbers');
+            }
+            
+            const det = m[0][0]*m[1][1] - m[0][1]*m[1][0];
+            const result = `Matrix:\n[${m[0][0]}, ${m[0][1]}]\n[${m[1][0]}, ${m[1][1]}]\n\nDeterminant = ${formatResult(det)}`;
+            document.getElementById('matrix-result').textContent = result;
+            display.value = formatResult(det);
+            addToHistory(`Det = ${formatResult(det)}`);
+        }
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Determinant error:', e);
+    }
+}
+
+/**
+ * Calculate matrix inverse
+ */
+function calculateInverse() {
+    try {
+        const inputs = document.querySelectorAll('.mat-inv-input');
+        const m = [
+            [parseFloat(inputs[0].value), parseFloat(inputs[1].value)],
+            [parseFloat(inputs[2].value), parseFloat(inputs[3].value)]
+        ];
+        
+        if (m.some(row => row.some(isNaN))) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        const det = m[0][0]*m[1][1] - m[0][1]*m[1][0];
+        
+        if (Math.abs(det) < 1e-10) {
+            throw new Error('Matrix is singular (determinant = 0)');
+        }
+        
+        const inv = [
+            [m[1][1]/det, -m[0][1]/det],
+            [-m[1][0]/det, m[0][0]/det]
+        ];
+        
+        let result = `Original Matrix:\n[${m[0][0]}, ${m[0][1]}]\n[${m[1][0]}, ${m[1][1]}]\n\n`;
+        result += `Inverse Matrix:\n[${formatResult(inv[0][0])}, ${formatResult(inv[0][1])}]\n`;
+        result += `[${formatResult(inv[1][0])}, ${formatResult(inv[1][1])}]`;
+        
+        document.getElementById('inverse-result').textContent = result;
+        display.value = 'Inverse calculated';
+        addToHistory('Matrix inverse calculated');
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Inverse error:', e);
+    }
+}
+
+/**
+ * Calculate matrix transpose
+ */
+function calculateTranspose() {
+    try {
+        const inputs = document.querySelectorAll('.mat-trans-input');
+        const m = [
+            [parseFloat(inputs[0].value), parseFloat(inputs[1].value)],
+            [parseFloat(inputs[2].value), parseFloat(inputs[3].value)]
+        ];
+        
+        if (m.some(row => row.some(isNaN))) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        const mT = [
+            [m[0][0], m[1][0]],
+            [m[0][1], m[1][1]]
+        ];
+        
+        let result = `Original Matrix:\n[${m[0][0]}, ${m[0][1]}]\n[${m[1][0]}, ${m[1][1]}]\n\n`;
+        result += `Transposed Matrix:\n[${mT[0][0]}, ${mT[0][1]}]\n[${mT[1][0]}, ${mT[1][1]}]`;
+        
+        document.getElementById('transpose-result').textContent = result;
+        display.value = 'Transpose calculated';
+        addToHistory('Matrix transposed');
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Transpose error:', e);
+    }
+}
+
+/**
+ * Calculate matrix multiplication
+ */
+function calculateMultiply() {
+    try {
+        const inputsA = document.querySelectorAll('.mat-mul-a');
+        const inputsB = document.querySelectorAll('.mat-mul-b');
+        
+        const a = [
+            [parseFloat(inputsA[0].value), parseFloat(inputsA[1].value)],
+            [parseFloat(inputsA[2].value), parseFloat(inputsA[3].value)]
+        ];
+        
+        const b = [
+            [parseFloat(inputsB[0].value), parseFloat(inputsB[1].value)],
+            [parseFloat(inputsB[2].value), parseFloat(inputsB[3].value)]
+        ];
+        
+        if (a.some(row => row.some(isNaN)) || b.some(row => row.some(isNaN))) {
+            throw new Error('Please enter valid numbers');
+        }
+        
+        const c = [
+            [a[0][0]*b[0][0] + a[0][1]*b[1][0], a[0][0]*b[0][1] + a[0][1]*b[1][1]],
+            [a[1][0]*b[0][0] + a[1][1]*b[1][0], a[1][0]*b[0][1] + a[1][1]*b[1][1]]
+        ];
+        
+        let result = `A × B =\n[${formatResult(c[0][0])}, ${formatResult(c[0][1])}]\n`;
+        result += `[${formatResult(c[1][0])}, ${formatResult(c[1][1])}]`;
+        
+        document.getElementById('multiply-result').textContent = result;
+        display.value = 'Matrices multiplied';
+        addToHistory('Matrices multiplied');
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Multiply error:', e);
+    }
+}
+
+// ==================== VECTOR OPERATIONS ====================
+
+/**
+ * Switch vector operation type
+ */
+function switchVectorType(type) {
+    const contents = document.querySelectorAll('.vec-content');
+    const tabs = document.querySelectorAll('.vec-tab');
+    
+    contents.forEach(content => content.classList.remove('active'));
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    document.getElementById(`${type}-calc`).classList.add('active');
+    event.target.classList.add('active');
+}
+
+/**
+ * Parse vector input string
+ */
+function parseVector(input) {
+    return input.split(',').map(x => {
+        const num = parseFloat(x.trim());
+        if (isNaN(num)) throw new Error(`Invalid vector component: ${x}`);
+        return num;
+    });
+}
+
+/**
+ * Calculate vector magnitude
+ */
+function calculateMagnitude() {
+    try {
+        const input = document.getElementById('mag-vector').value;
+        const vector = parseVector(input);
+        
+        const magnitude = Math.sqrt(vector.reduce((sum, x) => sum + x*x, 0));
+        
+        const result = `Vector: [${vector.join(', ')}]\n|v| = √(${vector.map(x => x + '²').join(' + ')})\n|v| = ${formatResult(magnitude)}`;
+        document.getElementById('magnitude-result').textContent = result;
+        display.value = formatResult(magnitude);
+        addToHistory(`|v| = ${formatResult(magnitude)}`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Magnitude error:', e);
+    }
+}
+
+/**
+ * Calculate dot product
+ */
+function calculateDotProduct() {
+    try {
+        const u = parseVector(document.getElementById('dot-u').value);
+        const v = parseVector(document.getElementById('dot-v').value);
+        
+        if (u.length !== v.length) {
+            throw new Error('Vectors must have same dimension');
+        }
+        
+        const dotProduct = u.reduce((sum, val, i) => sum + val * v[i], 0);
+        
+        const result = `u = [${u.join(', ')}]\nv = [${v.join(', ')}]\nu · v = ${formatResult(dotProduct)}`;
+        document.getElementById('dot-result').textContent = result;
+        display.value = formatResult(dotProduct);
+        addToHistory(`u · v = ${formatResult(dotProduct)}`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Dot product error:', e);
+    }
+}
+
+/**
+ * Calculate cross product
+ */
+function calculateCrossProduct() {
+    try {
+        const u = parseVector(document.getElementById('cross-u').value);
+        const v = parseVector(document.getElementById('cross-v').value);
+        
+        if (u.length !== 3 || v.length !== 3) {
+            throw new Error('Cross product requires 3D vectors');
+        }
+        
+        const cross = [
+            u[1]*v[2] - u[2]*v[1],
+            u[2]*v[0] - u[0]*v[2],
+            u[0]*v[1] - u[1]*v[0]
+        ];
+        
+        const result = `u = [${u.join(', ')}]\nv = [${v.join(', ')}]\nu × v = [${cross.map(x => formatResult(x)).join(', ')}]`;
+        document.getElementById('cross-result').textContent = result;
+        display.value = `[${cross.map(x => formatResult(x)).join(', ')}]`;
+        addToHistory(`u × v = [${cross.map(x => formatResult(x)).join(', ')}]`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Cross product error:', e);
+    }
+}
+
+let angleDisplayMode = 'deg';
+
+/**
+ * Toggle angle display mode
+ */
+function toggleAngleMode() {
+    angleDisplayMode = angleDisplayMode === 'deg' ? 'rad' : 'deg';
+    document.getElementById('angle-mode-display').textContent = angleDisplayMode.toUpperCase();
+}
+
+/**
+ * Calculate angle between vectors
+ */
+function calculateAngleBetween() {
+    try {
+        const u = parseVector(document.getElementById('angle-u').value);
+        const v = parseVector(document.getElementById('angle-v').value);
+        
+        if (u.length !== v.length) {
+            throw new Error('Vectors must have same dimension');
+        }
+        
+        const dotProd = u.reduce((sum, val, i) => sum + val * v[i], 0);
+        const magU = Math.sqrt(u.reduce((sum, x) => sum + x*x, 0));
+        const magV = Math.sqrt(v.reduce((sum, x) => sum + x*x, 0));
+        
+        if (magU === 0 || magV === 0) {
+            throw new Error('Cannot calculate angle with zero-magnitude vector');
+        }
+        
+        const cosAngle = Math.max(-1, Math.min(1, dotProd / (magU * magV)));
+        const angleRad = Math.acos(cosAngle);
+        const angleDeg = angleRad * 180 / Math.PI;
+        
+        const angle = angleDisplayMode === 'deg' ? angleDeg : angleRad;
+        const result = `u = [${u.join(', ')}]\nv = [${v.join(', ')}]\nθ = ${formatResult(angle)}${angleDisplayMode === 'deg' ? '°' : ' rad'}`;
+        document.getElementById('angle-result').textContent = result;
+        display.value = formatResult(angle) + (angleDisplayMode === 'deg' ? '°' : ' rad');
+        addToHistory(`θ = ${formatResult(angle)}${angleDisplayMode === 'deg' ? '°' : ''}`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Angle error:', e);
+    }
+}
+
+// ==================== ADDITIONAL STATISTICS ====================
+
+/**
+ * Calculate quartiles
+ */
+function calculateQuartiles() {
+    try {
+        const numbers = parseStatsInput().sort((a, b) => a - b);
+        const n = numbers.length;
+        
+        const q2 = n % 2 === 1 ? numbers[Math.floor(n/2)] : (numbers[n/2-1] + numbers[n/2]) / 2;
+        const q1 = numbers[Math.floor(n/4)];
+        const q3 = numbers[Math.floor(3*n/4)];
+        const iqr = q3 - q1;
+        
+        const result = `Q1 (Lower Quartile) = ${formatResult(q1)}\nQ2 (Median) = ${formatResult(q2)}\nQ3 (Upper Quartile) = ${formatResult(q3)}\nIQR = ${formatResult(iqr)}`;
+        display.value = `Q1=${formatResult(q1)}, Q3=${formatResult(q3)}`;
+        addToHistory(`Quartiles: Q1=${formatResult(q1)}, Q3=${formatResult(q3)}`);
+        document.getElementById('statistics-mode').nextElementSibling.textContent = result;
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Quartiles error:', e);
+    }
+}
+
+/**
+ * Calculate skewness
+ */
+function calculateSkewness() {
+    try {
+        const numbers = parseStatsInput();
+        const n = numbers.length;
+        const mean = numbers.reduce((a, b) => a + b, 0) / n;
+        const std = Math.sqrt(numbers.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n);
+        const skewness = numbers.reduce((sum, val) => sum + Math.pow((val - mean) / std, 3), 0) / n;
+        
+        const result = `Skewness = ${formatResult(skewness)}`;
+        display.value = formatResult(skewness);
+        addToHistory(`Skewness = ${formatResult(skewness)}`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Skewness error:', e);
+    }
+}
+
+/**
+ * Calculate kurtosis
+ */
+function calculateKurtosis() {
+    try {
+        const numbers = parseStatsInput();
+        const n = numbers.length;
+        const mean = numbers.reduce((a, b) => a + b, 0) / n;
+        const std = Math.sqrt(numbers.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / n);
+        const kurtosis = (numbers.reduce((sum, val) => sum + Math.pow((val - mean) / std, 4), 0) / n) - 3;
+        
+        const result = `Kurtosis = ${formatResult(kurtosis)}`;
+        display.value = formatResult(kurtosis);
+        addToHistory(`Kurtosis = ${formatResult(kurtosis)}`);
+    } catch (e) {
+        display.value = `Error: ${e.message}`;
+        console.error('Kurtosis error:', e);
+    }
 }

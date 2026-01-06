@@ -1,0 +1,88 @@
+# Advanced Scientific Calculator - Server Configuration
+# Enhanced for offline support and PWA functionality
+
+# Enable compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+    BrowserMatch ^Mozilla/4 no-gzip
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+</IfModule>
+
+# Enable browser caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Cache HTML files for 1 week (but revalidate)
+    ExpiresByType text/html "access plus 7 days"
+    
+    # Cache CSS and JavaScript for 30 days
+    ExpiresByType text/css "access plus 30 days"
+    ExpiresByType application/javascript "access plus 30 days"
+    ExpiresByType text/javascript "access plus 30 days"
+    
+    # Cache manifest and service worker
+    ExpiresByType application/manifest+json "access plus 1 hour"
+    ExpiresByType application/x-web-app-manifest+json "access plus 1 hour"
+    
+    # Cache images
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/gif "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    
+    # Default
+    ExpiresDefault "access plus 2 days"
+</IfModule>
+
+# Set correct MIME types
+<IfModule mod_mime.c>
+    AddType application/manifest+json .json webmanifest
+    AddType application/x-web-app-manifest+json .json
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType image/svg+xml .svg
+    AddEncoding gzip .svgz
+    AddType image/svg+xml .svgz
+</IfModule>
+
+# Service Worker specific headers
+<FilesMatch service-worker\.js>
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/javascript; charset=utf-8"
+</FilesMatch>
+
+# Manifest file headers
+<FilesMatch manifest\.json|\.webmanifest>
+    Header set Cache-Control "public, max-age=3600"
+    Header set Content-Type "application/manifest+json; charset=utf-8"
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+
+# Security headers
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "SAMEORIGIN"
+Header set X-XSS-Protection "1; mode=block"
+Header set Referrer-Policy "strict-origin-when-cross-origin"
+Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+# Improve SEO
+Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'"
+
+# Rewrite rules for SPA
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Remove .html extension
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)\.html$ $1 [L,R=301]
+    
+    # Redirect to index.html for HTML5 routing
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>
